@@ -48,6 +48,9 @@ class CalendarScreenViewController: UIViewController {
         calendarView.previousWeekButton.addTarget(self, action: #selector(onPreviousWeekTapped), for: .touchUpInside)
         calendarView.nextWeekButton.addTarget(self, action: #selector(onNextWeekTapped), for: .touchUpInside)
         calendarView.addTaskButton.addTarget(self, action: #selector(onAddTaskTapped), for: .touchUpInside)
+        
+        let logoTapGesture = UITapGestureRecognizer(target: self, action: #selector(onLogoTapped))
+            calendarView.logoImageView.addGestureRecognizer(logoTapGesture)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -117,5 +120,10 @@ class CalendarScreenViewController: UIViewController {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
+    }
+    
+    @objc func onLogoTapped() {
+        print("Calendar logo tapped - going back")
+        navigationController?.popViewController(animated: true)
     }
 }
