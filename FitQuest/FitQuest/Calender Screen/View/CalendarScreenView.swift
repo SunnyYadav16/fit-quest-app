@@ -47,6 +47,7 @@ class CalendarScreenView: UIView {
         logoImageView.image = UIImage(systemName: "arrow.up.heart.fill", withConfiguration: config)
         logoImageView.tintColor = UIColor(red: 0.33, green: 0.67, blue: 0.93, alpha: 1.0)
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        logoImageView.isUserInteractionEnabled = true
         self.addSubview(logoImageView)
         
         // Title

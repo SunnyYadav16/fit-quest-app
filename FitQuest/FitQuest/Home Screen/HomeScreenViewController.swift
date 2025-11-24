@@ -75,8 +75,8 @@ class HomeScreenViewController: UIViewController {
     }
     
     @objc func onStatsTapped() {
-        print("Stats card tapped")
-        // TODO: push Stats screen when created
+        let statsVC = StatsScreenViewController()
+        navigationController?.pushViewController(statsVC, animated: true)
     }
     
     @objc func onRewardsTapped() {
