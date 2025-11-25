@@ -42,16 +42,17 @@ class HomeScreenViewController: UIViewController {
         let statsTap = UITapGestureRecognizer(target: self, action: #selector(onStatsTapped))
         homeView.statsCardView.addGestureRecognizer(statsTap)
         
-        let rewardsTap = UITapGestureRecognizer(target: self, action: #selector(onRewardsTapped))
-        homeView.rewardsCardView.addGestureRecognizer(rewardsTap)
+        let leaderboardsTap = UITapGestureRecognizer(target: self, action: #selector(onLeaderboardsTapped))
+        homeView.leaderboardsCardView.addGestureRecognizer(leaderboardsTap)
         
         homeView.calendarCardView.isUserInteractionEnabled = true
         homeView.taskHistoryCardView.isUserInteractionEnabled = true
         homeView.statsCardView.isUserInteractionEnabled = true
-        homeView.rewardsCardView.isUserInteractionEnabled = true
+        homeView.leaderboardsCardView.isUserInteractionEnabled = true
         
-        homeView.notificationButton.addTarget(self, action: #selector(onNotificationsTapped), for: .touchUpInside)
+        homeView.profileButton.addTarget(self, action: #selector(onNotificationsTapped), for: .touchUpInside)
     }
+
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -130,4 +131,10 @@ extension HomeScreenViewController: UITableViewDelegate, UITableViewDataSource {
         print("Home task tapped: \(task.name)")
         // TODO: navigate to task details
     }
+    
+    @objc func onLeaderboardsTapped() {
+        let leaderboardsVC = LeaderboardsViewController()
+        navigationController?.pushViewController(leaderboardsVC, animated: true)
+    }
+
 }

@@ -12,8 +12,8 @@ class StatsScreenView: UIView {
     // MARK: - Header
     var logoImageView: UIImageView!
     var appNameLabel: UILabel!
-    var notificationButton: UIButton!
-    
+    var profileButton: UIButton!
+
     // MARK: - Title
     var statsTitleLabel: UILabel!
     
@@ -64,12 +64,12 @@ class StatsScreenView: UIView {
         appNameLabel.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(appNameLabel)
         
-        notificationButton = UIButton(type: .system)
-        let bellConfig = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular)
-        notificationButton.setImage(UIImage(systemName: "bell", withConfiguration: bellConfig), for: .normal)
-        notificationButton.tintColor = UIColor(red: 0.62, green: 0.79, blue: 0.97, alpha: 1.0)
-        notificationButton.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(notificationButton)
+        profileButton = UIButton(type: .system)
+        let profileConfig = UIImage.SymbolConfiguration(pointSize: 28, weight: .medium)
+        profileButton.setImage(UIImage(systemName: "person.circle.fill", withConfiguration: profileConfig), for: .normal)
+        profileButton.tintColor = UIColor(red: 0.33, green: 0.67, blue: 0.93, alpha: 1.0)
+        profileButton.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(profileButton)
     }
     
     func setupTitle() {
@@ -125,10 +125,10 @@ class StatsScreenView: UIView {
             appNameLabel.centerYAnchor.constraint(equalTo: logoImageView.centerYAnchor),
             appNameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
-            notificationButton.centerYAnchor.constraint(equalTo: logoImageView.centerYAnchor),
-            notificationButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
-            notificationButton.widthAnchor.constraint(equalToConstant: 32),
-            notificationButton.heightAnchor.constraint(equalToConstant: 32),
+            profileButton.centerYAnchor.constraint(equalTo: logoImageView.centerYAnchor),
+            profileButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            profileButton.widthAnchor.constraint(equalToConstant: 32),
+            profileButton.heightAnchor.constraint(equalToConstant: 32),
             
             // Title
             statsTitleLabel.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 24),
