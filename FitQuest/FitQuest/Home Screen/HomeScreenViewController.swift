@@ -134,7 +134,7 @@ extension HomeScreenViewController: UITableViewDelegate, UITableViewDataSource {
     
     @objc func onLeaderboardsTapped() {
         //let leaderboardsVC = LeaderboardsViewController()
-        navigationController?.pushViewController(leaderboardsVC, animated: true)
+        //navigationController?.pushViewController(leaderboardsVC, animated: true)
     }
 
 }
