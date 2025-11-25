@@ -12,13 +12,13 @@ class HomeScreenView: UIView {
     // MARK: - Header
     var logoImageView: UIImageView!
     var appNameLabel: UILabel!
-    var notificationButton: UIButton!
-    
+    var profileButton: UIButton!
+
     // MARK: - Feature Cards
     var calendarCardView: UIView!
     var taskHistoryCardView: UIView!
     var statsCardView: UIView!
-    var rewardsCardView: UIView!
+    var leaderboardsCardView: UIView!
     
     // Card contents
     var calendarIconView: UIImageView!
@@ -30,8 +30,8 @@ class HomeScreenView: UIView {
     var statsIconView: UIImageView!
     var statsLabel: UILabel!
     
-    var rewardsIconView: UIImageView!
-    var rewardsLabel: UILabel!
+    var leaderboardsIconView: UIImageView!
+    var leaderboardsLabel: UILabel!
     
     // MARK: - Due Tasks Header
     var dueTasksContainer: UIView!
@@ -65,10 +65,8 @@ class HomeScreenView: UIView {
     // MARK: - Setup
     
     func setupHeader() {
-        // Logo from asset catalog (replace "fitquest_logo" with your image name)
         logoImageView = UIImageView()
         logoImageView.contentMode = .scaleAspectFit
-        // Using SF Symbol as placeholder
         let config = UIImage.SymbolConfiguration(pointSize: 80, weight: .medium)
         logoImageView.image = UIImage(systemName: "arrow.up.heart.fill", withConfiguration: config)
         logoImageView.tintColor = UIColor(red: 0.33, green: 0.67, blue: 0.93, alpha: 1.0)
@@ -83,12 +81,14 @@ class HomeScreenView: UIView {
         appNameLabel.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(appNameLabel)
         
-        notificationButton = UIButton(type: .system)
-        let bellConfig = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular)
-        notificationButton.setImage(UIImage(systemName: "bell", withConfiguration: bellConfig), for: .normal)
-        notificationButton.tintColor = UIColor(red: 0.62, green: 0.79, blue: 0.97, alpha: 1.0)
-        notificationButton.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(notificationButton)
+        // Profile button (same style as calendar screen)
+        profileButton = UIButton(type: .system)
+        let profileConfig = UIImage.SymbolConfiguration(pointSize: 28, weight: .medium)
+        profileButton.setImage(UIImage(systemName: "person.circle.fill", withConfiguration: profileConfig), for: .normal)
+        profileButton.tintColor = UIColor(red: 0.33, green: 0.67, blue: 0.93, alpha: 1.0)
+        profileButton.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(profileButton)
+        
     }
     
     func makeCardView() -> UIView {
@@ -105,12 +105,12 @@ class HomeScreenView: UIView {
         calendarCardView = makeCardView()
         taskHistoryCardView = makeCardView()
         statsCardView = makeCardView()
-        rewardsCardView = makeCardView()
+        leaderboardsCardView = makeCardView()
         
         self.addSubview(calendarCardView)
         self.addSubview(taskHistoryCardView)
         self.addSubview(statsCardView)
-        self.addSubview(rewardsCardView)
+        self.addSubview(leaderboardsCardView)
         
         // Calendar
         calendarIconView = UIImageView()
@@ -161,20 +161,20 @@ class HomeScreenView: UIView {
         statsCardView.addSubview(statsLabel)
         
         // Rewards
-        rewardsIconView = UIImageView()
-        rewardsIconView.contentMode = .scaleAspectFit
-        rewardsIconView.image = UIImage(systemName: "trophy.fill")
-        rewardsIconView.tintColor = UIColor(red: 0.62, green: 0.79, blue: 0.97, alpha: 1.0)
-        rewardsIconView.translatesAutoresizingMaskIntoConstraints = false
-        rewardsCardView.addSubview(rewardsIconView)
+        leaderboardsIconView = UIImageView()
+        leaderboardsIconView.contentMode = .scaleAspectFit
+        leaderboardsIconView.image = UIImage(systemName: "list.number") // leaderboard-ish icon
+        leaderboardsIconView.tintColor = UIColor(red: 0.62, green: 0.79, blue: 0.97, alpha: 1.0)
+        leaderboardsIconView.translatesAutoresizingMaskIntoConstraints = false
+        leaderboardsCardView.addSubview(leaderboardsIconView)
         
-        rewardsLabel = UILabel()
-        rewardsLabel.text = "Rewards"
-        rewardsLabel.font = .systemFont(ofSize: 18, weight: .semibold)
-        rewardsLabel.textColor = .white
-        rewardsLabel.textAlignment = .center
-        rewardsLabel.translatesAutoresizingMaskIntoConstraints = false
-        rewardsCardView.addSubview(rewardsLabel)
+        leaderboardsLabel = UILabel()
+        leaderboardsLabel.text = "Leaderboards"
+        leaderboardsLabel.font = .systemFont(ofSize: 18, weight: .semibold)
+        leaderboardsLabel.textColor = .white
+        leaderboardsLabel.textAlignment = .center
+        leaderboardsLabel.translatesAutoresizingMaskIntoConstraints = false
+        leaderboardsCardView.addSubview(leaderboardsLabel)
     }
     
     func setupDueTasksHeader() {
@@ -247,11 +247,12 @@ class HomeScreenView: UIView {
             appNameLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 40),
             appNameLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -40),
             
-            notificationButton.centerYAnchor.constraint(equalTo: logoImageView.centerYAnchor),
-            notificationButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -24),
-            notificationButton.widthAnchor.constraint(equalToConstant: 32),
-            notificationButton.heightAnchor.constraint(equalToConstant: 32),
-            
+            // Profile top-right
+            profileButton.centerYAnchor.constraint(equalTo: logoImageView.centerYAnchor),
+            profileButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -24),
+            profileButton.widthAnchor.constraint(equalToConstant: 32),
+            profileButton.heightAnchor.constraint(equalToConstant: 32),
+                
             // Top row cards
             calendarCardView.topAnchor.constraint(equalTo: appNameLabel.bottomAnchor, constant: 24),
             calendarCardView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
@@ -269,10 +270,21 @@ class HomeScreenView: UIView {
             statsCardView.trailingAnchor.constraint(equalTo: self.centerXAnchor, constant: -8),
             statsCardView.heightAnchor.constraint(equalToConstant: 110),
             
-            rewardsCardView.topAnchor.constraint(equalTo: taskHistoryCardView.bottomAnchor, constant: 16),
-            rewardsCardView.leadingAnchor.constraint(equalTo: self.centerXAnchor, constant: 8),
-            rewardsCardView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
-            rewardsCardView.heightAnchor.constraint(equalToConstant: 110),
+            leaderboardsCardView.topAnchor.constraint(equalTo: taskHistoryCardView.bottomAnchor, constant: 16),
+            leaderboardsCardView.leadingAnchor.constraint(equalTo: self.centerXAnchor, constant: 8),
+            leaderboardsCardView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            leaderboardsCardView.heightAnchor.constraint(equalToConstant: 110),
+
+            // Icons + labels inside cards
+
+            leaderboardsIconView.topAnchor.constraint(equalTo: leaderboardsCardView.topAnchor, constant: 18),
+            leaderboardsIconView.centerXAnchor.constraint(equalTo: leaderboardsCardView.centerXAnchor),
+            leaderboardsIconView.widthAnchor.constraint(equalToConstant: 32),
+            leaderboardsIconView.heightAnchor.constraint(equalToConstant: 32),
+
+            leaderboardsLabel.topAnchor.constraint(equalTo: leaderboardsIconView.bottomAnchor, constant: 8),
+            leaderboardsLabel.leadingAnchor.constraint(equalTo: leaderboardsCardView.leadingAnchor, constant: 8),
+            leaderboardsLabel.trailingAnchor.constraint(equalTo: leaderboardsCardView.trailingAnchor, constant: -8),
             
             // Icons + labels inside cards
             calendarIconView.topAnchor.constraint(equalTo: calendarCardView.topAnchor, constant: 18),

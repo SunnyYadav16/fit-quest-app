@@ -20,12 +20,11 @@ class StatsScreenViewController: UIViewController {
         
         navigationController?.setNavigationBarHidden(true, animated: false)
         
-        statsView.notificationButton.addTarget(self,
-                                               action: #selector(onNotificationsTapped),
-                                               for: .touchUpInside)
-        
         let logoTap = UITapGestureRecognizer(target: self, action: #selector(onLogoTapped))
         statsView.logoImageView.addGestureRecognizer(logoTap)
+        
+        statsView.profileButton.addTarget(self,action: #selector(onProfileTapped),for: .touchUpInside)
+
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -37,9 +36,9 @@ class StatsScreenViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
-    @objc func onNotificationsTapped() {
-        print("Stats notifications tapped")
-        // TODO: show notifications/settings
+    @objc func onProfileTapped() {
+        let accountVC = AccountSettingsViewController()
+        navigationController?.pushViewController(accountVC, animated: true)
     }
     
     @objc func onLogoTapped() {
