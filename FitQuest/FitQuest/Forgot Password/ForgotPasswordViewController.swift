@@ -1,20 +1,22 @@
 //
-//  ViewController.swift
+//  ForgotPasswordViewController.swift
 //  FitQuest
 //
-//  Created by Sunny Yadav on 11/17/25.
+//  Created by Sunny Yadav on 12/2/25.
 //
 
 import UIKit
 import FirebaseAuth
 
-class ViewController: UIViewController {
+class ForgotPasswordViewController: UIViewController {
     
-    private let loginView = LoginView()
+    // MARK: - Properties
+    private let forgotPasswordView = ForgotPasswordView()
     private let authService = AuthService.shared
     
+    // MARK: - Lifecycle
     override func loadView() {
-        view = loginView
+        view = forgotPasswordView
     }
     
     override func viewDidLoad() {
@@ -42,31 +44,23 @@ class ViewController: UIViewController {
     // MARK: - Setup
     private func setupViewController() {
         navigationItem.hidesBackButton = true
-        navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     private func setupActions() {
-        loginView.signInButton.addTarget(self, action: #selector(handleSignIn), for: .touchUpInside)
-        loginView.forgotPasswordButton.addTarget(self, action: #selector(handleForgotPassword), for: .touchUpInside)
-        loginView.registerButton.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
+        forgotPasswordView.sendOTPButton.addTarget(self, action: #selector(handleSendResetLink), for: .touchUpInside)
+        forgotPasswordView.backToLoginButton.addTarget(self, action: #selector(handleBackToLogin), for: .touchUpInside)
     }
     
     private func setupDelegates() {
-        loginView.emailTextField.delegate = self
-        loginView.passwordTextField.delegate = self
+        forgotPasswordView.emailTextField.delegate = self
     }
     
     // MARK: - Actions
-    @objc private func handleSignIn() {
+    @objc private func handleSendResetLink() {
         view.endEditing(true)
         
-        guard let email = loginView.emailTextField.text, !email.isEmpty else {
-            showAlert(title: "Error", message: "Please enter your email.")
-            return
-        }
-        
-        guard let password = loginView.passwordTextField.text, !password.isEmpty else {
-            showAlert(title: "Error", message: "Please enter your password.")
+        guard let email = forgotPasswordView.emailTextField.text, !email.isEmpty else {
+            showAlert(title: "Email Required", message: "Please enter your email address.")
             return
         }
         
@@ -75,49 +69,24 @@ class ViewController: UIViewController {
             return
         }
         
-        signIn(email: email, password: password)
+        sendPasswordResetLink(email: email)
     }
     
-    @objc private func handleForgotPassword() {
-        let forgotPasswordVC = ForgotPasswordViewController()
-        navigationController?.pushViewController(forgotPasswordVC, animated: true)
-    }
-    
-    @objc private func handleRegister() {
-        let registerVC = RegisterViewController()
-        navigationController?.pushViewController(registerVC, animated: true)
+    @objc private func handleBackToLogin() {
+        navigationController?.popViewController(animated: true)
     }
     
     // MARK: - Firebase Operations
-    private func signIn(email: String, password: String) {
-        showLoadingIndicator()
-        
-        Task {
-            do {
-                try await authService.signIn(email: email, password: password)
-                await MainActor.run {
-                    hideLoadingIndicator()
-                    navigateToMainScreen()
-                }
-            } catch {
-                await MainActor.run {
-                    hideLoadingIndicator()
-                    let errorMessage = FirebaseErrorHandler.getErrorMessage(from: error)
-                    showAlert(title: "Login Failed", message: errorMessage)
-                }
-            }
-        }
-    }
-    
-    private func sendPasswordReset(email: String) {
+    private func sendPasswordResetLink(email: String) {
         showLoadingIndicator()
         
         Task {
             do {
                 try await authService.sendPasswordReset(email: email)
+                
                 await MainActor.run {
                     hideLoadingIndicator()
-                    showAlert(title: "Success", message: "Password reset email sent! Please check your inbox.")
+                    showSuccessAlert(email: email)
                 }
             } catch {
                 await MainActor.run {
@@ -129,34 +98,33 @@ class ViewController: UIViewController {
         }
     }
     
-    // MARK: - Navigation
-    private func navigateToMainScreen() {
-        loginView.emailTextField.text = ""
-        loginView.passwordTextField.text = ""
+    // MARK: - Success Alert
+    private func showSuccessAlert(email: String) {
+        let alert = UIAlertController(
+            title: "Check Your Email",
+            message: "We've sent a password reset link to \(email). Please check your inbox and follow the instructions to reset your password.",
+            preferredStyle: .alert
+        )
         
-        let homeVC = HomeScreenViewController()
-        let navController = UINavigationController(rootViewController: homeVC)
-        navController.modalPresentationStyle = .fullScreen
-        present(navController, animated: true)
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+            self?.navigationController?.popViewController(animated: true)
+        })
+        
+        present(alert, animated: true)
     }
 }
 
 // MARK: - UITextFieldDelegate
-extension ViewController: UITextFieldDelegate {
+extension ForgotPasswordViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == loginView.emailTextField {
-            loginView.passwordTextField.becomeFirstResponder()
-        } else if textField == loginView.passwordTextField {
-            textField.resignFirstResponder()
-            handleSignIn()
-        }
+        textField.resignFirstResponder()
+        handleSendResetLink()
         return true
     }
 }
 
-
 // MARK: - Keyboard Protocol
-extension ViewController: KeyboardProtocol {
+extension ForgotPasswordViewController: KeyboardProtocol {
     func hideKeyboardOnTapOutside() {
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboardOnTap))
         tapRecognizer.cancelsTouchesInView = false
@@ -168,9 +136,8 @@ extension ViewController: KeyboardProtocol {
     }
 }
 
-
 // MARK: - Alert Protocol
-extension ViewController: AlertProtocol {
+extension ForgotPasswordViewController: AlertProtocol {
     func showAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
@@ -179,9 +146,8 @@ extension ViewController: AlertProtocol {
 }
 
 // MARK: - Loading Indicator Protocol
-extension ViewController: LoadingIndicatorProtocol {
+extension ForgotPasswordViewController: LoadingIndicatorProtocol {
     func showLoadingIndicator() {
-        // Remove any existing indicator first
         hideLoadingIndicator()
         
         let indicator = UIActivityIndicatorView(style: .large)

@@ -314,15 +314,6 @@ class HomeScreenView: UIView {
             statsLabel.leadingAnchor.constraint(equalTo: statsCardView.leadingAnchor, constant: 8),
             statsLabel.trailingAnchor.constraint(equalTo: statsCardView.trailingAnchor, constant: -8),
             
-            rewardsIconView.topAnchor.constraint(equalTo: rewardsCardView.topAnchor, constant: 18),
-            rewardsIconView.centerXAnchor.constraint(equalTo: rewardsCardView.centerXAnchor),
-            rewardsIconView.widthAnchor.constraint(equalToConstant: 32),
-            rewardsIconView.heightAnchor.constraint(equalToConstant: 32),
-            
-            rewardsLabel.topAnchor.constraint(equalTo: rewardsIconView.bottomAnchor, constant: 8),
-            rewardsLabel.leadingAnchor.constraint(equalTo: rewardsCardView.leadingAnchor, constant: 8),
-            rewardsLabel.trailingAnchor.constraint(equalTo: rewardsCardView.trailingAnchor, constant: -8),
-            
             // Due tasks container
             dueTasksContainer.topAnchor.constraint(equalTo: statsCardView.bottomAnchor, constant: 24),
             dueTasksContainer.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),

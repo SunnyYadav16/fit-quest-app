@@ -13,10 +13,10 @@ class RegisterView: UIView {
     var logoImageView: UIImageView!
     var appNameLabel: UILabel!
     var signUpTitleLabel: UILabel!
+    var profileImageButton: UIButton!
     var nameTextField: UITextField!
-    var usernameTextField: UITextField!
-    var passwordTextField: UITextField!
     var emailTextField: UITextField!
+    var passwordTextField: UITextField!
     var dateOfBirthTextField: UITextField!
     var signUpButton: UIButton!
     var haveAccountLabel: UILabel!
@@ -31,10 +31,10 @@ class RegisterView: UIView {
         setupLogoImageView()
         setupAppNameLabel()
         setupSignUpTitleLabel()
+        setupProfileImageButton()
         setupNameTextField()
-        setupUsernameTextField()
-        setupPasswordTextField()
         setupEmailTextField()
+        setupPasswordTextField()
         setupDateOfBirthTextField()
         setupSignUpButton()
         setupHaveAccountLabel()
@@ -88,24 +88,34 @@ class RegisterView: UIView {
         contentView.addSubview(signUpTitleLabel)
     }
     
+    func setupProfileImageButton() {
+        profileImageButton = UIButton(type: .system)
+        
+        // Default profile image
+        let config = UIImage.SymbolConfiguration(pointSize: 50, weight: .regular)
+        let profileImage = UIImage(systemName: "person.circle.fill", withConfiguration: config)
+        profileImageButton.setImage(profileImage, for: .normal)
+        profileImageButton.tintColor = UIColor(red: 0.33, green: 0.67, blue: 0.93, alpha: 1.0)
+        
+        // Styling
+        profileImageButton.backgroundColor = UIColor.white.withAlphaComponent(0.1)
+        profileImageButton.layer.cornerRadius = 60
+        profileImageButton.layer.borderWidth = 2
+        profileImageButton.layer.borderColor = UIColor(red: 0.33, green: 0.67, blue: 0.93, alpha: 0.5).cgColor
+        profileImageButton.clipsToBounds = true
+        profileImageButton.imageView?.contentMode = .scaleAspectFill
+        
+        // Show menu on tap
+        profileImageButton.showsMenuAsPrimaryAction = true
+        
+        profileImageButton.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(profileImageButton)
+    }
+    
     func setupNameTextField() {
         nameTextField = createTextField(placeholder: "Name")
         nameTextField.textContentType = .name
         contentView.addSubview(nameTextField)
-    }
-    
-    func setupUsernameTextField() {
-        usernameTextField = createTextField(placeholder: "Username")
-        usernameTextField.textContentType = .username
-        usernameTextField.autocapitalizationType = .none
-        contentView.addSubview(usernameTextField)
-    }
-    
-    func setupPasswordTextField() {
-        passwordTextField = createTextField(placeholder: "Password")
-        passwordTextField.isSecureTextEntry = true
-        passwordTextField.textContentType = .newPassword
-        contentView.addSubview(passwordTextField)
     }
     
     func setupEmailTextField() {
@@ -114,6 +124,13 @@ class RegisterView: UIView {
         emailTextField.textContentType = .emailAddress
         emailTextField.autocapitalizationType = .none
         contentView.addSubview(emailTextField)
+    }
+    
+    func setupPasswordTextField() {
+        passwordTextField = createTextField(placeholder: "Password")
+        passwordTextField.isSecureTextEntry = true
+        passwordTextField.textContentType = .newPassword
+        contentView.addSubview(passwordTextField)
     }
     
     func setupDateOfBirthTextField() {
@@ -221,27 +238,27 @@ class RegisterView: UIView {
             signUpTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 40),
             signUpTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -40),
             
-            nameTextField.topAnchor.constraint(equalTo: signUpTitleLabel.bottomAnchor, constant: 35),
+            profileImageButton.topAnchor.constraint(equalTo: signUpTitleLabel.bottomAnchor, constant: 25),
+            profileImageButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            profileImageButton.widthAnchor.constraint(equalToConstant: 120),
+            profileImageButton.heightAnchor.constraint(equalToConstant: 120),
+            
+            nameTextField.topAnchor.constraint(equalTo: profileImageButton.bottomAnchor, constant: 25),
             nameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 50),
             nameTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -50),
             nameTextField.heightAnchor.constraint(equalToConstant: 50),
             
-            usernameTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 15),
-            usernameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 50),
-            usernameTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -50),
-            usernameTextField.heightAnchor.constraint(equalToConstant: 50),
-            
-            passwordTextField.topAnchor.constraint(equalTo: usernameTextField.bottomAnchor, constant: 15),
-            passwordTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 50),
-            passwordTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -50),
-            passwordTextField.heightAnchor.constraint(equalToConstant: 50),
-            
-            emailTextField.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 15),
+            emailTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 15),
             emailTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 50),
             emailTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -50),
             emailTextField.heightAnchor.constraint(equalToConstant: 50),
             
-            dateOfBirthTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 15),
+            passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 15),
+            passwordTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 50),
+            passwordTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -50),
+            passwordTextField.heightAnchor.constraint(equalToConstant: 50),
+            
+            dateOfBirthTextField.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 15),
             dateOfBirthTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 50),
             dateOfBirthTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -50),
             dateOfBirthTextField.heightAnchor.constraint(equalToConstant: 50),

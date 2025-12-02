@@ -1,0 +1,78 @@
+//
+//  Constants.swift
+//  FitQuest
+//
+//  Created by Sunny Yadav on 12/2/25.
+//
+
+
+import Foundation
+
+struct Constants {
+    
+    // MARK: - Firebase Collections
+    struct Collections {
+        static let users = "users"
+        static let tasks = "tasks"
+        static let predefinedTasks = "predefinedTasks"
+        static let stats = "stats"
+        static let notifications = "notifications"
+    }
+    
+    // MARK: - XP Values
+    struct XP {
+        static let baseXP = 50
+        static let easyMultiplier = 1.0
+        static let mediumMultiplier = 1.5
+        static let hardMultiplier = 2.0
+        static let completionBonus = 10
+        
+        static func calculateXP(duration: Int, difficulty: PredefinedTask.TaskDifficulty) -> Int {
+            let baseValue = (duration / 10) * baseXP // 50 XP per 10 minutes
+            let multiplier = difficulty.xpMultiplier
+            return Int(Double(baseValue) * multiplier) + completionBonus
+        }
+    }
+    
+    // MARK: - Level Thresholds
+    struct Levels {
+        static let tier1Threshold = 0
+        static let tier2Threshold = 1000
+        static let tier3Threshold = 5000
+        
+        static func getTier(xp: Int) -> Int {
+            if xp >= tier3Threshold {
+                return 3
+            } else if xp >= tier2Threshold {
+                return 2
+            } else {
+                return 1
+            }
+        }
+        
+        static func getLevel(xp: Int) -> Int {
+            return max(1, xp / 100)
+        }
+        
+        static func xpForNextLevel(currentXP: Int) -> Int {
+            let currentLevel = getLevel(xp: currentXP)
+            let nextLevelXP = (currentLevel + 1) * 100
+            return nextLevelXP - currentXP
+        }
+    }
+    
+    // MARK: - Default Values
+    struct Defaults {
+        static let profileImagePlaceholder = "person.circle.fill"
+        static let defaultTaskDuration = 30 // minutes
+        static let minTaskDuration = 5 // minutes
+        static let maxTaskDuration = 240 // minutes (4 hours)
+    }
+    
+    // MARK: - Notification Identifiers
+    struct NotificationIdentifiers {
+        static let taskReminderPrefix = "task_reminder_"
+        static let streakReminderPrefix = "streak_reminder_"
+        static let dailySummary = "daily_summary"
+    }
+}
